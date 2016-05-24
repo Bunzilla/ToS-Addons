@@ -122,9 +122,11 @@ local function inventoryUpdate(actor,evName,itemID,itemQty)
 		settings.silver.farmed = settings.silver.farmed + itemQty;
 		settings.silver.gain = settings.silver.gain + itemQty;		
 		if (settings.silver.gain >= options.minAlert.silver) then
-			local pts = '[Silver] +'..GetCommaedText(settings.silver.gain)..' obtained';
-			local intime = settings.getTimeString(settings.silver.time,options.minAlert.silver);			
-			cwAPI.util.log(pts..intime..'.');
+			if(options.show.silver) then
+				local pts = '[Silver] +'..GetCommaedText(settings.silver.gain)..' obtained';
+				local intime = settings.getTimeString(settings.silver.time,options.minAlert.silver);			
+				cwAPI.util.log(pts..intime..'.');
+			end
 			settings.silver.gain = 0;
 			settings.silver.time = os.clock();
 		end
@@ -218,25 +220,31 @@ function petExpUpdate()
 		settings.resetPet();
 	end
 
-	local diff = now - settings.pet.now;
-
-	if (diff > 0) then		
-		settings.pet.gain = settings.pet.gain + diff;
-		local prgain = settings.pet.gain*100/max;
-
-		if (prgain >= options.minAlert.pet) then
-			local dstotal = string.format("%.1f%%",prtotal, 100.0);
-			local dspr = string.format("%.2f%%", prgain, 100.0);
-			
-			local intime = settings.getTimeString(settings.pet.time,options.minAlert.pet);
-			cwAPI.util.log('[XPpet] +'..dspr..' ('..dstotal..')'..intime..'.');
-			settings.pet.gain = 0;
-			settings.pet.time = os.clock();
-		end
+	if(options.show.pet) then
 		
-		settings.pet.prnow = prtotal;
-		settings.pet.now = now;
+		local diff = now - settings.pet.now;
+
+		if (diff > 0) then		
+			settings.pet.gain = settings.pet.gain + diff;
+			local prgain = settings.pet.gain*100/max;
+
+			if (prgain >= options.minAlert.pet) then
+				local dstotal = string.format("%.1f%%",prtotal, 100.0);
+				local dspr = string.format("%.2f%%", prgain, 100.0);
+			
+				local intime = settings.getTimeString(settings.pet.time,options.minAlert.pet);
+				cwAPI.util.log('[XPpet] +'..dspr..' ('..dstotal..')'..intime..'.');
+				settings.pet.gain = 0;
+				settings.pet.time = os.clock();
+			end
+		
+			settings.pet.prnow = prtotal;
+			settings.pet.now = now;
+		end
+	
 	end
+
+
 end
 
 -- ======================================================
