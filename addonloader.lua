@@ -8,8 +8,8 @@ addonloader.loaded = false;
 -- ======================================================
 
 addonloader.settings = {};
-addonloader.settings.devMode = false;
-addonloader.settings.closeAfter = true;
+addonloader.settings.devMode = true;
+addonloader.settings.keepOpen = 0; -- 0 or 1
 
 -- ======================================================
 --	debug
@@ -93,25 +93,18 @@ addonloader.run();
 local addonLoaderFrame = ui.GetFrame("addonloader");
 addonLoaderFrame:Move(0, 0);
 addonLoaderFrame:SetOffset(500,30);
-
--- ======================================================
--- adjusting the addon button frame
--- ======================================================
-
-if (addonloader.settings.closeAfter) then
-	addonLoaderFrame:ShowWindow(0);
-else
-	addonLoaderFrame:ShowWindow(1);
-end
+addonLoaderFrame:ShowWindow(addonloader.settings.keepOpen);
 
 -- ======================================================
 -- hooking it on map-init
 -- ======================================================
 
-function addonloader_mapOnInit()
+function addonloader_mapOnInit(addon,frame)
+	_G['MAP_ON_INIT_OLD'](addon,frame);
+
 	if (addonloader.loaded) then
 		local addonLoaderFrame = ui.GetFrame("addonloader");
-		addonLoaderFrame:ShowWindow(0);
+		addonLoaderFrame:ShowWindow(addonloader.settings.keepOpen); 
 	end
 end
 
