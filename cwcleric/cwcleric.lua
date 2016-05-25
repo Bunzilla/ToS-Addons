@@ -1,31 +1,33 @@
+local cwCleric = {};
+
 -- ======================================================
 --	settings
 -- ======================================================
 
-local settings = {};
-settings.devMode = false;
-settings.isOnParty = false;
+cwCleric.settings = {};
+cwCleric.settings.partyid = -1;
+cwCleric.settings.waitingLeave = false;
 
 -- ======================================================
 --	attibute list
 -- ======================================================
 
-local attributes = {};
-attributes.HealRemoveDamage = 401016;
+cwCleric.attributes = {};
+cwCleric.attributes.HealRemoveDamage = 401016;
 
 -- ======================================================
 --	leave party
 -- ======================================================
 
-function toggleHealRemoveDamageOff() 
-	cwAPI.attributes.toggleOff(attributes.HealRemoveDamage);
+function cwCleric_toggleHealRemoveDamageOff() 
+	cwAPI.attributes.toggleOff(cwCleric.attributes.HealRemoveDamage);
 end
 
-local function leftParty(state) 
-	if (state == 1) then
+function cwCleric.leftParty(atrState) 
+	if (atrState == 1) then
 		local msgtitle = 'cwCleric{nl}'..'-----------{nl}';
 		local msgalert = 'You just left a party but your "Heal: Remove Damage" is ON. Do you want to toggle it off?';
-		ui.MsgBox(msgtitle..msgalert,'toggleHealRemoveDamageOff()',"None");	
+		ui.MsgBox(msgtitle..msgalert,'cwCleric_toggleHealRemoveDamageOff()',"None");	
 	end
 end
 
@@ -33,15 +35,15 @@ end
 --	join party
 -- ======================================================
 
-function toggleHealRemoveDamageOn() 
-	cwAPI.attributes.toggleOn(attributes.HealRemoveDamage);
+function cwCleric_toggleHealRemoveDamageOn() 
+	cwAPI.attributes.toggleOn(cwCleric.attributes.HealRemoveDamage);
 end
 
-local function joinedParty(state) 
-	if (state == 0) then
+function cwCleric.joinedParty(atrState) 
+	if (atrState == 0) then
 		local msgtitle = 'cwCleric{nl}'..'-----------{nl}';
 		local msgalert = 'You just joined a party but your "Heal: Remove Damage" is OFF. Do you want to toggle it on?';
-		ui.MsgBox(msgtitle..msgalert,'toggleHealRemoveDamageOn()',"None");	
+		ui.MsgBox(msgtitle..msgalert,'cwCleric_toggleHealRemoveDamageOn()',"None");	
 	end
 end
 
@@ -49,23 +51,39 @@ end
 --	check what happened
 -- ======================================================
 
-local function checkIfLeftOrJoined() 
-	local abilName, abilID, state = cwAPI.attributes.getData(attributes.HealRemoveDamage);
+function cwCleric.forceLeave()
+	cwCleric.settings.waitingLeave = true;
+end
+
+function cwCleric.partyMsgUpdate() 
+	if (cwCleric.settings.waitingLeave) then
+		cwCleric.settings.waitingLeave = false;
+		cwCleric.checkIfPartyChanged();		
+	end
+end
+
+function cwCleric.checkPartyPropertyUpdate(frame, msg, str, num)
+	if (str == 'CreateTime') then cwCleric.checkIfPartyChanged(); end
+end
+
+function cwCleric.checkIfPartyChanged()
+	local abilName, abilID, atrState = cwAPI.attributes.getData(cwCleric.attributes.HealRemoveDamage);
 	if (abilName == nil) then return; end
 
-	local pcparty = session.party.GetPartyInfo();
+	local pcparty = session.party.GetPartyInfo();	
 	
-	if (not settings.isOnParty and pcparty ~= nil) then
-		settings.isOnParty = true;
-		joinedParty(state);
-		return;
+	local newpartyid = -1;
+	if (pcparty ~= nil) then newpartyid = pcparty.info:GetPartyID(); end
+
+	if (newpartyid ~= cwCleric.settings.partyid) then
+		if (newpartyid == -1) then
+			cwCleric.leftParty(atrState);
+		else
+			cwCleric.joinedParty(atrState);
+		end		
 	end
 
-	if (settings.isOnParty and pcparty == nil) then
-		settings.isOnParty = false;
-		leftParty(state);
-		return;
-	end
+	cwCleric.settings.partyid = newpartyid;
 end 
 
 -- ======================================================
@@ -74,13 +92,17 @@ end
 
 
 _G['ADDON_LOADER']['cwcleric'] = function() 
-	cwAPI.events.on('ON_PARTY_UPDATE',checkIfLeftOrJoined,1);
+	-- checking dependences
+	if (not cwAPI) then
+		ui.SysMsg('[cwCleric] requires cwAPI to run.');
+		return false;
+	end
 
+	-- executing onload
+	cwAPI.events.on('ON_PARTY_PROPERTY_UPDATE',cwCleric.checkPartyPropertyUpdate,1);	
+	cwAPI.events.on('PARTY_MSG_UPDATE',cwCleric.partyMsgUpdate,1);
+	cwAPI.events.on('OUT_PARTY',cwCleric.forceLeave,1);	
+	cwCleric.checkIfPartyChanged();
 
-	-- inverting the flag to force a alert onload if needed
-	local pcparty = session.party.GetPartyInfo();
-	if (pcparty ~= nil) then settings.isOnParty = true; end
-	checkIfLeftOrJoined();
-	
 	return true;
 end

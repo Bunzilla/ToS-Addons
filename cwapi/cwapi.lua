@@ -374,7 +374,7 @@ end
 
 local function reloadAddons()
 	ui.SysMsg('=====================================');
-	_G['ADDON_LOAD_ALL']();
+	addonloader.run();
 end
 
 local function showAddonsButton() 

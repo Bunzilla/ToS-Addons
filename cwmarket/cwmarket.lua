@@ -39,7 +39,7 @@ function cwMarket.createRetrieveButtons()
 	ctrl:SetText("{@st41b}{img Silver 24 24}{/}");
 	ctrl:SetClickSound('button_click_big');
 	ctrl:SetOverSound('button_over');	
-	ctrl:SetEventScript(ui.LBUTTONUP,'cwMarket_retrieveAllSilver');
+	ctrl:SetEventScript(ui.LBUTTONUP,'cwMarket_retrieveAllSilver()');
 	cwMarket.silverButton = ctrl;
 	cwMarket.silverButton:SetEnable(0);
 
@@ -51,7 +51,7 @@ function cwMarket.createRetrieveButtons()
 	ctrl:SetText("{@st41b}{img icon_item_small_bag 24 24}{/}");
 	ctrl:SetClickSound('button_click_big');
 	ctrl:SetOverSound('button_over');	
-	ctrl:SetEventScript(ui.LBUTTONUP,'cwMarket_retrieveAllItems');
+	ctrl:SetEventScript(ui.LBUTTONUP,'cwMarket_retrieveAllItems()');
 	cwMarket.itemButton = ctrl;
 	cwMarket.itemButton:SetEnable(0);
 end
