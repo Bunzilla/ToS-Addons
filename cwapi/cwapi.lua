@@ -49,7 +49,11 @@ function cwAPI.util.dump(object,destination,flag)
 	    io.close(file);
 	    return true;
 	end
+end
 
+function cwAPI.util.notepad(object,flagInspect)
+	if (flagInspect) then object = cwAPI.util.inspect(object); end
+	TestNotePad(object);
 end
 
 function cwAPI.util.tablelength(T)
