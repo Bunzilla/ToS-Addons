@@ -68,7 +68,9 @@ end
 --	Auto-selecting items and clicking the repair button
 -- ======================================================
 
-function cwRepair.runList(itemList) 
+function cwRepair.runEquipList() 
+	local itemList = session.GetEquipItemList();
+
 	for i = 0, itemList:Count() - 1 do
 		local item = itemList:Element(i);
 		local tempobj = item:GetObject();
@@ -77,7 +79,6 @@ function cwRepair.runList(itemList)
 			if IS_NEED_REPAIR_ITEM(itemobj,0) == true then
 				local slot = cwRepair.slotSet:GetSlotByIndex(cwRepair.sloti);
 				slot:Select(0); 
-
 				local icon = slot:GetIcon();
 				if (icon) then						
 					local pr = itemobj.Dur*100/itemobj.MaxDur;
@@ -92,6 +93,45 @@ function cwRepair.runList(itemList)
 	end
 end
 
+function cwRepair.runInvList() 
+	local invItemList = session.GetInvItemList();
+
+
+	local i = invItemList:Head();
+	while 1 do
+		if i == invItemList:InvalidIndex() then
+			break;
+		end
+
+		local invItem = invItemList:Element(i);		
+		i = invItemList:Next(i);
+		
+		local tempobj = invItem:GetObject();
+		if tempobj ~= nil then
+			local itemobj = GetIES(tempobj);
+			if IS_NEED_REPAIR_ITEM(itemobj,0) == true then
+				local slot = cwRepair.slotSet:GetSlotByIndex(cwRepair.sloti);
+				while slot == nil do 
+					cwRepair.slotSet:ExpandRow();
+					slot = cwRepair.slotSet:GetSlotByIndex(cwRepair.sloti);
+				end
+				slot:Select(0); 
+				local icon = slot:GetIcon();
+				if (icon) then
+					local pr = itemobj.Dur*100/itemobj.MaxDur;
+					if (pr < cwRepair.options.minPr) then 
+						cwRepair.torepair = cwRepair.torepair+1;
+						slot:Select(1); 
+					end
+				end
+				cwRepair.sloti = cwRepair.sloti+1;
+			end	
+		end
+
+	end
+
+end
+
 function cwRepair.autoSelectItems() 
 	local frame = cwRepair.GetFrame();
 	local ctrl = frame:GetChildRecursively("selectAllBtn");
@@ -100,8 +140,9 @@ function cwRepair.autoSelectItems()
 	cwRepair.torepair = 0;	
 	cwRepair.slotSet = GET_CHILD_RECURSIVELY_AT_TOP(ctrl, "slotlist", "ui::CSlotSet");
 
-	cwRepair.runList(session.GetEquipItemList());
-	cwRepair.runList(session.GetInvItemList());
+
+	cwRepair.runEquipList();
+	cwRepair.runInvList();
 
 	cwRepair.slotSet:MakeSelectionList();
 	UPDATE_REPAIR140731_MONEY(frame);
@@ -172,6 +213,5 @@ _G['ADDON_LOADER']['cwrepair'] = function()
 	cwRepair.createButtonIfNeeded();
 
 	cwAPI.json.save(cwRepair.options,'cwrepair');
-
 	return true;
 end
