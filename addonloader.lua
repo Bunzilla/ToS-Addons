@@ -8,7 +8,7 @@ addonloader.loaded = false;
 -- ======================================================
 
 addonloader.settings = {};
-addonloader.settings.devMode = true;
+addonloader.settings.devMode = false;
 addonloader.settings.keepOpen = 0; -- 0 or 1
 
 -- ======================================================
@@ -36,8 +36,8 @@ function addonloader.dofile(fullpath)
 	end
 end
 
-function addonloader.load(addonname) 
-	return addonloader.dofile('../addons/'..addonname..'/'..addonname..'.lua');
+function addonloader.load(root,addonname) 
+	return addonloader.dofile('../'..root..'/'..addonname..'/'..addonname..'.lua');
 end
 
 -- ======================================================
@@ -47,33 +47,36 @@ end
 addonloader.dofile('../addons/utility.lua');
 
 -- ======================================================
---	folders
+--	addons
 -- ======================================================
 
 _G["ADDON_LOADER"] = {};
 
+addonloader.roots = {};
+table.insert(addonloader.roots,'addons');
+table.insert(addonloader.roots,'addons2');
+
 addonloader.run = function()
 	ui.SysMsg("Addonloader running...");
-	addonloader.folders = {};
-
-	local info = debug.getinfo(1,'S');
-	local directory = info.source:match[[^@?(.*[\/])[^\/]-$]];
-
-	local i, addons, popen = 0, {}, io.popen;
-	for folder in popen('dir "'..directory..'" /b /ad'):lines() do
-	   	local loaded = addonloader.load(folder);	   	
-	   	if (loaded) then table.insert(addonloader.folders,folder); end	  
+	
+	addonloader.addons = {};
+	
+	for i,root in pairs(addonloader.roots) do
+		for folder in io.popen('dir "..\\'..root..'\" /b /ad'):lines() do
+			addonloader.debug('- '..root..'/'..folder);
+		   	local loaded = addonloader.load(root,folder);	   	
+		   	if (loaded) then table.insert(addonloader.addons,folder); end	  
+		end
 	end
 
 	addonloader.debug('Initializing addons...');
 
-	for i,folder in pairs(addonloader.folders) do
-
-		addonloader.debug('- '..folder);
-		local fn = _G['ADDON_LOADER'][folder];
+	for i,addonName in pairs(addonloader.addons) do
+		addonloader.debug('- '..addonName);
+		local fn = _G['ADDON_LOADER'][addonName];
 		local ok = true;
 		if fn then ok = fn(); end
-		if (not ok) then CHAT_SYSTEM('['..folder..'] failed.') end
+		if (not ok) then CHAT_SYSTEM('['..addonName..'] failed.') end
 	end
 
 	ui.SysMsg("Addonloader done!");
