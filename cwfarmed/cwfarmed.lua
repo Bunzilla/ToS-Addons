@@ -29,7 +29,7 @@ for atr,vlr in pairs(defaults) do
 	local tpvlr = type(vlr);
 	if (tpvlr == 'table') then
 		for atr2, vlr2 in pairs(vlr) do
-			if (not options[atr][atr2]) then options[atr][atr2] = vlr2; end
+			if (options[atr][atr2] == nil) then options[atr][atr2] = vlr2; end
 		end
 	end
 end

@@ -2,13 +2,29 @@
 
 Here you can find all the addons I've created. Feel free to use my cwAPI to create yours too! Ask me if you need help.
 
-Also, please check my database website. It's growing! http://tos.codware.com/
+Also, please check my database website. It's growing! http://tosdb.org/
 
-Have any question or suggestion about the addons or the website? Hit me at http://discordapp.com (user #3304).
+Have any question or suggestion about the addons or the website? Hit me at http://discordapp.com (user fiote#3304).
 
 ## Download ##
 
 <a href='https://github.com/fiote/treeofsavior-addons/releases'>Get the latest release here</a>
+
+## cwSet
+[depends on cwAPI]
+
+<img src='http://i.imgur.com/oA9Afts.png'>
+
+cwSet allows you to store an infinite number of gear 'sets', so you can easily switch between them.
+
+Ex: As a cleric, I usually have 2 sets of gear.
+* So I equip all my offensive gear and then I type <code>/set save dps</code>
+* Then I equip all my healing gear and type <code>/set save heal</code>.
+
+Now I can simply type <code>/set load dps</code> or <code>/set load heal</code> to switch all my gear (the items must be on your inventory, of course).
+
+<b>ATTENTION:</b> A full gear change will take up to 5 seconds to complete. You must stand still while it's happenning or that may cause the change to be interrupted. If that happens, simply run the command again to switch the remaining items.
+
 
 ## cwMarket
 [depends on cwAPI]
@@ -24,11 +40,6 @@ The second shows the amount of silver from your sales that is ready to retrieve,
 So in the image above, I have only 1 item in the market, and it already expired so I can retrieve it.
 I also have 90k in sales to receive, but only 10k of that can be retrieved right now.
 
-## vwFarmed
-
-In the /farmed command, the xpjob info was missing #11 . That's solved now. 
-
-
 ## cwToLearn
 [depends on cwAPI]
 
@@ -38,19 +49,31 @@ When selecting the "Show only attributes that can be learned" on the 'Learn Attr
 ## cwFarmed
 [depends on cwAPI, help avaiable at https://github.com/fiote/treeofsavior-addons/wiki/cwFarmed]
 
-Display how much silver you have grinded from mobs in the current section.
+cwFarmed allows you to easily see what's really being farmed while you grind your way through the game.
+
+Can display how much silver you have grinded from mobs in the current section.
 
 <img src='http://i.imgur.com/Gb2f190.png'>
 
-Display the ammount of silver each monster dropped to you.
+Can display the silver dropped.
 
-<img src='http://i.imgur.com/YEjP7eB.png'>
+<img src='http://i.imgur.com/2Z4Y5pY.png'>
 
-Display the ammount of XP each monster awarded you.
+Can display the items dropped.
 
-<img src='http://i.imgur.com/jo5uBAJ.png'>
+<img src='http://i.imgur.com/p6PF2aX.png'>
 
-<img src='http://i.imgur.com/fr20ksB.png'>
+Can display the ammount of XP (base) earned.
+
+<img src='http://i.imgur.com/lIX8Dzy.png'>
+
+Can display the ammount of XP (job) earned.
+
+<img src='http://i.imgur.com/TLgipS6.png'>
+
+Can display the ammount of XP (pet) earned.
+
+<img src='http://i.imgur.com/t49Tztl.png'>
 
 ## cwCleric
 [depends on cwAPI]
@@ -69,9 +92,6 @@ A tiny addon that disables the 'shake' the games used on certain skills. I read 
 Type /skn for help.
 
 ## cwAPI
-[![Addon Safe](https://cdn.rawgit.com/lubien/awesome-tos/master/badges/addon-safe.svg)](https://github.com/lubien/awesome-tos#addons-badges)
-[![Addon Status Unknown](https://cdn.rawgit.com/lubien/awesome-tos/master/badges/addon-unknown.svg)](https://github.com/lubien/awesome-tos#addons-badges)
-
 An API of core functionalities.
 
 Enables you to hook on events and decide if you custom function will be called before, after or instead of the original callback.
