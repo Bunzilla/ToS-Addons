@@ -51,7 +51,8 @@ function cwAPI.util.dump(object,destination,flag)
 	end
 end
 
-function cwAPI.util.notepad(object,flagInspect)
+function cwAPI.util.notepad(object,flagInspect,flagMeta)
+	if (flagMeta) then object = getmetatable(object); end
 	if (flagInspect) then object = cwAPI.util.inspect(object); end
 	TestNotePad(object);
 end

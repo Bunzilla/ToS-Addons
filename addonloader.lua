@@ -54,7 +54,7 @@ _G["ADDON_LOADER"] = {};
 
 addonloader.roots = {};
 table.insert(addonloader.roots,'addons');
-table.insert(addonloader.roots,'addons2');
+-- table.insert(addonloader.roots,'addons2');
 
 addonloader.run = function()
 	ui.SysMsg("Addonloader running...");

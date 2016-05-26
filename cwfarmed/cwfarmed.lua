@@ -273,11 +273,15 @@ local function checkCommand(words)
 	if (cmd == 'items' or cmd == 'silver' or cmd == 'xp' or cmd == 'xpjob' or cmd == 'pet') then
 		local atr = cmd;
 		local dsflag = table.remove(words,1);
-		if (dsflag == 'on') then options.show[atr] = true; end 
-		if (dsflag == 'off') then options.show[atr] = false; end 
-		local msgflag = 'Show '..atr..' set to ['..dsflag..'].';
-		cwAPI.json.save(options,'cwfarmed');
-		return ui.MsgBox(msgtitle..msgflag);		
+		if (dsflag == 'on' or dsflag == 'off') then
+			if (dsflag == 'on') then options.show[atr] = true; end 
+			if (dsflag == 'off') then options.show[atr] = false; end 
+			local msgflag = 'Show '..atr..' set to ['..dsflag..'].';
+			cwAPI.json.save(options,'cwfarmed');
+			return ui.MsgBox(msgtitle..msgflag);		
+		else 
+			return ui.MsgBox(msgtitle.."The value should be 'on' or 'off' (without quotes). Not '"..getvarvalue(dsflag).."' as informed.");		
+		end
 	end
 
 	if (cmd == 'silvermin' or cmd == 'xpmin' or cmd == 'xpjobmin' or cmd == 'petmin') then
