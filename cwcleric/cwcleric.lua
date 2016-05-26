@@ -1,5 +1,7 @@
 local cwCleric = {};
 
+local log = cwAPI.util.log;
+
 -- ======================================================
 --	settings
 -- ======================================================
@@ -64,6 +66,7 @@ end
 
 function cwCleric.checkPartyPropertyUpdate(frame, msg, str, num)
 	if (str == 'CreateTime') then cwCleric.checkIfPartyChanged(); end
+	if (msg == 'PARTY_INST_UPDATE') then cwCleric.checkIfPartyChanged(); end
 end
 
 function cwCleric.checkIfPartyChanged()
@@ -100,6 +103,8 @@ _G['ADDON_LOADER']['cwcleric'] = function()
 
 	-- executing onload
 	cwAPI.events.on('ON_PARTY_PROPERTY_UPDATE',cwCleric.checkPartyPropertyUpdate,1);	
+	cwAPI.events.on('ON_PARTYINFO_INST_UPDATE',cwCleric.checkPartyPropertyUpdate,1);	
+			
 	cwAPI.events.on('PARTY_MSG_UPDATE',cwCleric.partyMsgUpdate,1);
 	cwAPI.events.on('OUT_PARTY',cwCleric.forceLeave,1);	
 	cwCleric.checkIfPartyChanged();
