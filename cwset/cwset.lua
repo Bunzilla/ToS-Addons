@@ -108,16 +108,23 @@ end
 
 function cwSet.checkCommand(words)
 	local cmd = table.remove(words,1);
+	local msgtitle = 'cwSet{nl}'..'-----------{nl}';
 	
 	if (cmd == 'save' or cmd == 'load') then
 		local setname = table.remove(words,1);
 		return cwSet.actions[cmd](setname); 
 	end
 
+	if (not cmd) then
+		local msgcmd = '';
+		local msgcmd = msgcmd .. '/set save <name>{nl}'..'Save the current gear as a <name> set.{nl}'..'-----------{nl}';
+		local msgcmd = msgcmd .. '/set load <name>{nl}'..'Search for the previously saved set and equip it.{nl}';
+		
+		return ui.MsgBox(msgtitle..msgcmd,"","Nope");
+	end
 
-	local msgcmd = '';
-	local msgcmd = msgcmd .. '/set save <name>{nl}'..'Save the current gear as a <name> set.{nl}'..'-----------{nl}';
-	local msgcmd = msgcmd .. '/set load <name>{nl}'..'Search for the previously saved set and equip it.{nl}';
+	local msgerr = 'Command not valid.{nl}'..'Type "/set" for help.';
+	ui.MsgBox(msgtitle..msgerr,"","Nope");
 
 end
 
