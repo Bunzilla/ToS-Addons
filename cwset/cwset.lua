@@ -1,16 +1,12 @@
-if (not cwSet) then 
-	cwSet = {};
-end
-
+local cwSet = {};
 local log = cwAPI.util.log;
 
 -- ======================================================
 --	Sets
 -- ======================================================
 
-if (not cwSet.sets) then
-	cwSet.sets = {};
-end
+cwSet.sets = cwAPI.json.load('cwset');
+if (not cwSet.sets) then cwSet.sets = {}; end
 
 -- ======================================================
 --	Actions
@@ -35,6 +31,7 @@ function cwSet.actions.save(setname)
 
 	cwSet.sets[setname] = setList;
 	log('cwSet ['..setname..'] saved!');
+	cwAPI.json.save(cwSet.sets,'cwset');
 end
 
 function cwSet.actions.dochanges() 
