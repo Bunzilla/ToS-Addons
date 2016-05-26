@@ -5,7 +5,7 @@ local log = cwAPI.util.log;
 --	Sets
 -- ======================================================
 
-cwSet.sets = cwAPI.json.load('cwset');
+cwSet.sets = cwAPI.json.load('cwset','cwset',true);
 if (not cwSet.sets) then cwSet.sets = {}; end
 
 -- ======================================================
