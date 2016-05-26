@@ -234,11 +234,11 @@ local parseMessage = function(message) cwAPI.commands.parseMessage(message); end
 
 cwAPI.json = {};
 
-function cwAPI.json.load(folder,filename)
+function cwAPI.json.load(folder,filename,ignoreError)
 	if (not filename) then filename = folder; end
 	local file, error = io.open("../addons/"..folder.."/"..filename..".json", "r");
 	if (error) then
-		ui.SysMsg("Error opening "..folder.."/"..filename.." to load json: "..error);
+		if (not ignoreError) then ui.SysMsg("Error opening "..folder.."/"..filename.." to load json: "..error); end
 		return null;
 	else 
 	    local filestring = file:read("*all");
