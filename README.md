@@ -106,8 +106,14 @@ Extract the zip to your Tree of Savior directory (C:\Program Files (x86)\Steam\s
 
 <img src='https://camo.githubusercontent.com/3dd7b4c321f4c9f8013ebdff2985d52461c67e64/687474703a2f2f692e696d6775722e636f6d2f776d65316b4f632e706e67'>
 
-Start game and login to character.
+* If you're also using the older version of Excrulon addons (which contains data/SumAni.ipf), then the folder work is done.
 
+* If you're using the new version of Excrulon addons (or aren't using those at all), then you must download [Excrulon latest SumAni.pif](https://github.com/Excrulon/Tree-of-Savior-Lua-Mods/raw/72ec297300cb57a16b11538873a43a1635c6d54c/data/SumAni.ipf) and put it on your /data folder. 
+
+<b>What's on SumAni.ipf?</b><br/>
+That file is used to create the "Load Addons" button, which when clicked runs the addonloader.lua.
+
+Start game and login to character.
 Press the "Load Addons" button. It should disappear. You're done!
 
 ## Uninstall ##
