@@ -1,3 +1,5 @@
+local cwAPI = require("cwapi");
+
 local cwCleric = {};
 
 local log = cwAPI.util.log;
@@ -92,22 +94,24 @@ end
 -- ======================================================
 --	LOADER
 -- ======================================================
+local isLoaded = false;
 
+function CWCLERIC_ON_INIT()
+	if not isLoaded then
+		-- checking dependences
+		if (not cwAPI) then
+			ui.SysMsg('[cwCleric] requires cwAPI to run.');
+			return false;
+		end
 
-_G['ADDON_LOADER']['cwcleric'] = function() 
-	-- checking dependences
-	if (not cwAPI) then
-		ui.SysMsg('[cwCleric] requires cwAPI to run.');
-		return false;
+		-- executing onload
+		cwAPI.events.on('ON_PARTY_PROPERTY_UPDATE',cwCleric.checkPartyPropertyUpdate,1);	
+		cwAPI.events.on('ON_PARTYINFO_INST_UPDATE',cwCleric.checkPartyPropertyUpdate,1);	
+				
+		cwAPI.events.on('PARTY_MSG_UPDATE',cwCleric.partyMsgUpdate,1);
+		cwAPI.events.on('OUT_PARTY',cwCleric.forceLeave,1);	
+		cwCleric.checkIfPartyChanged();
+
+		isLoaded = true;
 	end
-
-	-- executing onload
-	cwAPI.events.on('ON_PARTY_PROPERTY_UPDATE',cwCleric.checkPartyPropertyUpdate,1);	
-	cwAPI.events.on('ON_PARTYINFO_INST_UPDATE',cwCleric.checkPartyPropertyUpdate,1);	
-			
-	cwAPI.events.on('PARTY_MSG_UPDATE',cwCleric.partyMsgUpdate,1);
-	cwAPI.events.on('OUT_PARTY',cwCleric.forceLeave,1);	
-	cwCleric.checkIfPartyChanged();
-
-	return true;
 end

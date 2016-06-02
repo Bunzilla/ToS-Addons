@@ -1,3 +1,5 @@
+local cwAPI = require("cwapi");
+
 local cwMarket = {};
 
 local log = cwAPI.util.log;
@@ -110,19 +112,23 @@ end
 -- ======================================================
 --	LOADER
 -- ======================================================
+local isLoaded = false;
 
-_G['ADDON_LOADER']['cwmarket'] = function() 
-	-- checking dependences
-	if (not cwAPI) then
-		ui.SysMsg('[cwMarket] requires cwAPI to run.');
-		return false;
+function CWMARKET_ON_INIT()
+	if not isLoaded then
+		-- checking dependences
+		if (not cwAPI) then
+			ui.SysMsg('[cwMarket] requires cwAPI to run.');
+			return false;
+		end
+		-- executing onload
+		if (not cwMarket.data) then cwMarket.data = {}; end
+
+		cwMarket.createRetrieveButtons();
+		cwAPI.events.on('ON_CABINET_ITEM_LIST',cwMarket.cabinetItemList,1);	
+		cwMarket.cabinetItemList();
+		
+		isLoaded = true;
 	end
-	-- executing onload
-	if (not cwMarket.data) then cwMarket.data = {}; end
-
-	cwMarket.createRetrieveButtons();
-	cwAPI.events.on('ON_CABINET_ITEM_LIST',cwMarket.cabinetItemList,1);	
-	cwMarket.cabinetItemList();
-
-	return true;
 end
+

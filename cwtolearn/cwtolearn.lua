@@ -1,3 +1,5 @@
+local cwAPI = require("cwapi");
+
 -- ======================================================
 --	on attribute shop list refresh
 -- ======================================================
@@ -58,14 +60,17 @@ end
 -- ======================================================
 --	LOADER
 -- ======================================================
+local isLoaded = false;
 
-_G['ADDON_LOADER']['cwtolearn'] = function() 
-	-- checking dependences
-	if (not cwAPI) then
-		ui.SysMsg('[cwFarmed] requires cwAPI to run.');
-		return false;
+function CWTOLEARN_ON_INIT()
+	if not isLoaded then
+		-- checking dependences
+		if (not cwAPI) then
+			ui.SysMsg('[cwFarmed] requires cwAPI to run.');
+			return false;
+		end
+		-- executing onload
+		cwAPI.events.on('REFRESH_ABILITYSHOP',refreshAbilityShop,0);
+		isLoaded = true;
 	end
-	-- executing onload
-	cwAPI.events.on('REFRESH_ABILITYSHOP',refreshAbilityShop,0);
-	return true;
 end

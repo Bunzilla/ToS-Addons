@@ -1,3 +1,5 @@
+local cwAPI = require("cwapi");
+
 local cwRepair = {};
 
 local log = cwAPI.util.log;
@@ -6,7 +8,7 @@ local log = cwAPI.util.log;
 --	Options
 -- ======================================================
 
-cwRepair.options = cwAPI.json.load('cwrepair','cwrepair',true);
+cwRepair.options = cwAPI.json.load('cwrepair');
 
 if (not cwRepair.options) then 
 	cwRepair.options = {};
@@ -37,7 +39,7 @@ function cwRepair.createButtonIfNeeded()
 	local ctrl = frame:GetChildRecursively("selectAllBtn");
 	ctrl:SetOffset(18,52);
 
-	local dspr = string.format("%.d%%", cwRepair.options.minPr, 30);
+	local dspr = string.format("%d%%", cwRepair.options.minPr);
 
 	local ctrl = frame:CreateOrGetControl('button', 'cwrepair_SELECTMIN', 0, 0, 200, 42);
 	ctrl:SetSkinName('test_pvp_btn');
@@ -200,18 +202,21 @@ end
 -- ======================================================
 --	LOADER
 -- ======================================================
+local isLoaded = false;
 
-_G['ADDON_LOADER']['cwrepair'] = function() 
-	-- checking dependences
-	if (not cwAPI) then
-		ui.SysMsg('[cwRepair] requires cwAPI to run.');
-		return false;
+function CWREPAIR_ON_INIT()
+	if not isLoaded then
+		-- checking dependences
+		if (not cwAPI) then
+			ui.SysMsg('[cwRepair] requires cwAPI to run.');
+			return false;
+		end
+
+		cwAPI.events.on('UPDATE_REPAIR140731_LIST',cwRepair.checkRepairList,1);
+		cwAPI.commands.register('/rep',cwRepair.checkCommand);
+		cwRepair.createButtonIfNeeded();
+
+		cwAPI.json.save(cwRepair.options,'cwrepair');
+		isLoaded = true;
 	end
-
-	cwAPI.events.on('UPDATE_REPAIR140731_LIST',cwRepair.checkRepairList,1);
-	cwAPI.commands.register('/rep',cwRepair.checkCommand);
-	cwRepair.createButtonIfNeeded();
-
-	cwAPI.json.save(cwRepair.options,'cwrepair');
-	return true;
 end

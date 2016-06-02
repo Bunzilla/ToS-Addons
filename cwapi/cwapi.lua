@@ -2,14 +2,14 @@
 --	settings
 -- ======================================================
 
-cwAPI = {};
+local cwAPI = {};
 cwAPI.devMode = false;
 
 -- ======================================================
 --	imports
 -- ======================================================
 
-JSON = (loadfile "../addons/cwapi/JSON.lua")();
+local JSON = require('json')
 
 -- ======================================================
 --	util	
@@ -35,7 +35,7 @@ function cwAPI.util.splitString(s,type)
 	return words;
 end
 
-cwAPI.util.inspect = (loadfile "../addons/cwapi/inspect.lua")();
+cwAPI.util.inspect = require("inspect")();
 
 function cwAPI.util.dump(object,destination,flag) 
 	if (not flag) then flag = 'w'; end
@@ -239,10 +239,10 @@ function cwAPI.json.load(folder,filename,ignoreError)
 	local file, error = io.open("../addons/"..folder.."/"..filename..".json", "r");
 	if (error) then
 		if (not ignoreError) then ui.SysMsg("Error opening "..folder.."/"..filename.." to load json: "..error); end
-		return null;
+		return nil;
 	else 
 	    local filestring = file:read("*all");
-	    local object = JSON:decode(filestring);    
+	    local object = JSON.decode(filestring);    
 	    io.close(file);
 	    return object;
 	end
@@ -408,12 +408,6 @@ cwAPI.events.on('UI_CHAT',parseMessage,0);
 cwAPI.commands.register('/addons',showAddonsButton);
 cwAPI.commands.register('/reload',reloadAddons);
 
-_G['ADDON_LOADER']['cwapi'] = function() 	
-	-- executing onload
-	cwAPI.commands.register('/script',runScript);
-	cwAPI.commands.register('/cw',checkCommand);	
-	cwAPI.util.log('[cwAPI:help] /cw');
-	return true;
-end 
+return cwAPI
 
 
