@@ -35,22 +35,6 @@ function cwAPI.util.splitString(s,type)
 	return words;
 end
 
-cwAPI.util.inspect = require("inspect")();
-
-function cwAPI.util.dump(object,destination,flag) 
-	if (not flag) then flag = 'w'; end
-	local astext = cwAPI.util.inspect(object);
-	local file, error = io.open(destination,flag);
-	if (error) then
-		ui.SysMsg("Error opening "..name.." to write dump: "..error);
-		return false;
-	else 
-		file:write(astext);
-	    io.close(file);
-	    return true;
-	end
-end
-
 function cwAPI.util.notepad(object,flagInspect,flagMeta)
 	if (flagMeta) then object = getmetatable(object); end
 	if (flagInspect) then object = cwAPI.util.inspect(object); end
