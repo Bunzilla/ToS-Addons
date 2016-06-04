@@ -48,8 +48,8 @@
 		"name": "cwRepair",
 		"file": "cwrepair",
 		"extension": "ipf",
-		"fileVersion": "v1.0.1",
-		"releaseTag": "acutilSlashCommand",
+		"fileVersion": "v1.0.2",
+		"releaseTag": "cwrepair",
 		"unicode": "🐻",
 		"description": "cwRepair lets you define a durability% to consider a gear 'good' and easily repair the bads when visiting a repair shop.",
 		"tags": [
