@@ -128,7 +128,8 @@ function CWMARKET_ON_INIT()
 		cwAPI.events.on('ON_CABINET_ITEM_LIST',cwMarket.cabinetItemList,1);	
 		cwMarket.cabinetItemList();
 		
-		isLoaded = true;
+		isLoaded = true;		
+		cwAPI.util.log('[cwMarket] loaded.');
 	end
 end
 

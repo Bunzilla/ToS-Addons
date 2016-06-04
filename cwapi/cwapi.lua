@@ -392,6 +392,6 @@ cwAPI.events.on('UI_CHAT',parseMessage,0);
 cwAPI.commands.register('/addons',showAddonsButton);
 cwAPI.commands.register('/reload',reloadAddons);
 
-return cwAPI
+return cwAPI;
 
 

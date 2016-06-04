@@ -365,10 +365,10 @@ function CWFARMED_ON_INIT()
 		cwAPI.events.on('ON_JOB_EXP_UPDATE',charjobUpdate,1);
 
 		cwAPI.commands.register('/farmed',checkCommand);
-		log('[cwFarmed:help] /farmed');
-
 		cwAPI.json.save(options,'cwfarmed');
 		isLoaded = true;
+
+		cwAPI.util.log('[cwFarmed] loaded.');
 	end
 end
 

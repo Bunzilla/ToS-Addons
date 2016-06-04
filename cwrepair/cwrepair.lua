@@ -218,5 +218,7 @@ function CWREPAIR_ON_INIT()
 
 		cwAPI.json.save(cwRepair.options,'cwrepair');
 		isLoaded = true;
+
+		cwAPI.util.log('[cwRepair] loaded.');
 	end
 end

@@ -113,5 +113,6 @@ function CWCLERIC_ON_INIT()
 		cwCleric.checkIfPartyChanged();
 
 		isLoaded = true;
+		cwAPI.util.log('[cwCleric] loaded.');
 	end
 end

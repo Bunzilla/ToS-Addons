@@ -149,5 +149,6 @@ function CWSET_ON_INIT()
 		cwAPI.commands.register('/set',cwSet.checkCommand);
 
 		isLoaded = true;
+		cwAPI.util.log('[cwSet] loaded.');
 	end
 end
