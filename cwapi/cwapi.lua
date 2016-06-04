@@ -35,9 +35,8 @@ function cwAPI.util.splitString(s,type)
 	return words;
 end
 
-function cwAPI.util.notepad(object,flagInspect,flagMeta)
+function cwAPI.util.notepad(object,flagMeta)
 	if (flagMeta) then object = getmetatable(object); end
-	if (flagInspect) then object = cwAPI.util.inspect(object); end
 	TestNotePad(object);
 end
 
