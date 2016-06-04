@@ -23,7 +23,7 @@ defaults.show.xpjob = true;
 defaults.show.pet = true;
 
 -- loading json file
-local options = cwAPI.json.load('cwfarmed');
+local options = cwAPI.json.load('cwfarmed','cwFarmed',true);
 if (not options) then options = defaults; end
 
 -- applying defaults if needed
