@@ -1,4 +1,5 @@
 local cwAPI = require("cwapi");
+local acutil = require('acutil');
 
 local cwSet = {};
 local log = cwAPI.util.log;
@@ -146,7 +147,7 @@ function CWSET_ON_INIT()
 		cwSet.equipping = nil;
 		cwSet.actions.changeList = {};
 
-		cwAPI.commands.register('/set',cwSet.checkCommand);
+		acutil.slashCommand('/set',cwSet.checkCommand);
 
 		isLoaded = true;
 		cwAPI.util.log('[cwSet] loaded.');
