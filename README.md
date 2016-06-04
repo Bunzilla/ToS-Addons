@@ -1,3 +1,6 @@
+# THIS REPOSITORY IS BEING MOVED TO A IPF FORMAT. FILES MAY CHANGE ANYTIME WHILE I ADAPT MYSELF TO IT. PROCEED WITH CAUTION.
+
+
 ## Tree of Savior Lua Mods - cwLibrary ##
 
 Here you can find all the addons I've created. Feel free to use my cwAPI to create yours too! Ask me if you need help.
