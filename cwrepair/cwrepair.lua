@@ -9,7 +9,7 @@ local log = cwAPI.util.log;
 --	Options
 -- ======================================================
 
-cwRepair.options = cwAPI.json.load('cwrepair');
+cwRepair.options = cwAPI.json.load('cwrepair','cwrepair',true);
 
 if (not cwRepair.options) then 
 	cwRepair.options = {};
@@ -189,7 +189,7 @@ function cwRepair.checkCommand(words)
 
 		local msgcmd = '';
 		local msgcmd = msgcmd .. '/rep auto [on/off]{nl}'..'Set if the addon should try to repair items automatically when you open a repair window (now: '..dsflag..').{nl}'..'-----------{nl}';
-		local msgcmd = msgcmd .. '/set min <value(0-100)>{nl}'..'Defines the min durability% to consider a gear "good". Any % lower than that will be repaired (now: '..dsmin..'%).{nl}';
+		local msgcmd = msgcmd .. '/rep min <value(0-100)>{nl}'..'Defines the min durability% to consider a gear "good". Any % lower than that will be repaired (now: '..dsmin..'%).{nl}';
 		
 		return ui.MsgBox(msgtitle..msgcmd,"","Nope");
 	end
