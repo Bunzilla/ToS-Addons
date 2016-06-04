@@ -9,7 +9,8 @@ cwAPI.devMode = false;
 --	imports
 -- ======================================================
 
-local JSON = require('json')
+local JSON = require('json');
+local acutil = require('acutil');
 
 -- ======================================================
 --	util	
@@ -165,51 +166,6 @@ function cwAPI.events.printParams(a,b,c,e,d,f,g)
 	if (f) then cwAPI.util.dev('f) '..getvarvalue(f),cwAPI.devMode); end
 	if (g) then cwAPI.util.dev('g) '..getvarvalue(g),cwAPI.devMode); end
 end
-
--- ======================================================
---	COMMANDS
--- ======================================================
-
-cwAPI.commands = {};
-cwAPI.commands.hooks = {};
-cwAPI.commands.ignoreCommonChatCommands = {"/r","/w","/p","/y","/s","/g"};
-
-function cwAPI.commands.register(cmd,callback) 
-	cwAPI.commands.hooks[cmd] = callback;
-end
-
-function cwAPI.commands.closeChat()
-	local chatFrame = GET_CHATFRAME();
-	local edit = chatFrame:GetChild('mainchat');
-
-	chatFrame:ShowWindow(0);
-	edit:ShowWindow(0);
-	
-	ui.CloseFrame("chat_option");
-	ui.CloseFrame("chat_emoticon");
-end
-
-function cwAPI.commands.parseMessage(message)
-    local words = cwAPI.util.splitString(message);
-    local cmd = table.remove(words,1);
-
-  for i,v in ipairs(cwAPI.commands.ignoreCommonChatCommands) do
-    if (tostring(cmd) == tostring(v)) then
-      break;
-    end
-  end
-
-    local fn = cwAPI.commands.hooks[cmd];
-    if (fn ~= nil) then
-    	cwAPI.commands.closeChat();
-        return fn(words); 
-    else        
-        fn = cwAPI.events.original('UI_CHAT');
-        fn(message);
-    end
-end
-
-local parseMessage = function(message) cwAPI.commands.parseMessage(message); end
 
 -- ======================================================
 --	JSONs
@@ -387,10 +343,8 @@ end
 -- ======================================================
 
 cwAPI.events.resetAll();
-cwAPI.events.on('UI_CHAT',parseMessage,0);
-cwAPI.commands.register('/addons',showAddonsButton);
-cwAPI.commands.register('/reload',reloadAddons);
-
+acutil.slashCommand('/addons',showAddonsButton);
+acutil.slashCommand('/reload',reloadAddons);
 return cwAPI;
 
 

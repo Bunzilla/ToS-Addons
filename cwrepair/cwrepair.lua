@@ -1,4 +1,5 @@
 local cwAPI = require("cwapi");
+local acutil = require('acutil');
 
 local cwRepair = {};
 
@@ -213,7 +214,7 @@ function CWREPAIR_ON_INIT()
 		end
 
 		cwAPI.events.on('UPDATE_REPAIR140731_LIST',cwRepair.checkRepairList,1);
-		cwAPI.commands.register('/rep',cwRepair.checkCommand);
+		acutil.slashCommand('/rep',cwRepair.checkCommand);
 		cwRepair.createButtonIfNeeded();
 
 		cwAPI.json.save(cwRepair.options,'cwrepair');

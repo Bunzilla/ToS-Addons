@@ -1,4 +1,5 @@
 local cwAPI = require("cwapi");
+local acutil = require('acutil');
 
 -- ======================================================
 --	options
@@ -364,7 +365,7 @@ function CWFARMED_ON_INIT()
 		cwAPI.events.on('CHARBASEINFO_ON_MSG',charbaseUpdate,1);
 		cwAPI.events.on('ON_JOB_EXP_UPDATE',charjobUpdate,1);
 
-		cwAPI.commands.register('/farmed',checkCommand);
+		acutil.slashCommand('/farmed',checkCommand);
 		cwAPI.json.save(options,'cwfarmed');
 		isLoaded = true;
 
