@@ -4,7 +4,7 @@
 		"file": "cwcleric",
 		"extension": "ipf",
 		"fileVersion": "v1.0.0",
-		"releaseTag": "slash",
+		"releaseTag": "IPFzero",
 		"unicode": "🐻",
 		"description": "cwCleric is a class helper. It'll remind you to toggle 'Heal: Remove Damage' on/off when joining/leaving parties.",
 		"tags": [
