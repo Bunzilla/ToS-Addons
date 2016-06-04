@@ -1,3 +1,5 @@
+local cwAPI = require("cwapi");
+
 local cwSet = {};
 local log = cwAPI.util.log;
 
@@ -129,21 +131,23 @@ end
 -- ======================================================
 --	LOADER
 -- ======================================================
+local isLoaded = false;
 
+function CWSET_ON_INIT()
+	if not isLoaded then
+		-- checking dependences
+		if (not cwAPI) then
+			ui.SysMsg('[cwSet] requires cwAPI to run.');
+			return false;
+		end
 
-_G['ADDON_LOADER']['cwset'] = function() 
-	-- checking dependences
-	if (not cwAPI) then
-		ui.SysMsg('[cwSet] requires cwAPI to run.');
-		return false;
+		cwAPI.events.on('SET_EQUIP_LIST',cwSet.actions.dochanges,1);
+		
+		cwSet.equipping = nil;
+		cwSet.actions.changeList = {};
+
+		cwAPI.commands.register('/set',cwSet.checkCommand);
+
+		isLoaded = true;
 	end
-
-	cwAPI.events.on('SET_EQUIP_LIST',cwSet.actions.dochanges,1);
-	
-	cwSet.equipping = nil;
-	cwSet.actions.changeList = {};
-
-	cwAPI.commands.register('/set',cwSet.checkCommand);
-
-	return true;
 end

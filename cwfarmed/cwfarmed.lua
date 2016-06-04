@@ -1,3 +1,5 @@
+local cwAPI = require("cwapi");
+
 -- ======================================================
 --	options
 -- ======================================================
@@ -341,29 +343,32 @@ end
 -- ======================================================
 --	LOADER
 -- ======================================================
+local isLoaded = false;
 
-_G['ADDON_LOADER']['cwfarmed'] = function() 
-	-- checking dependences
-	if (not cwAPI) then
-		ui.SysMsg('[cwFarmed] requires cwAPI to run.');
-		return false;
+function CWFARMED_ON_INIT()
+	if not isLoaded then
+		-- checking dependences
+		if (not cwAPI) then
+			ui.SysMsg('[cwFarmed] requires cwAPI to run.');
+			return false;
+		end
+
+		settings.resetXPBase();
+		settings.resetXPJob();
+		settings.resetSilver();
+		settings.resetPet();
+
+		-- executing onload
+		cwAPI.events.on('ITEMMSG_ITEM_COUNT',inventoryUpdate,1);
+		cwAPI.events.on('DRAW_TOTAL_VIS',refreshZeny,1);
+		cwAPI.events.on('CHARBASEINFO_ON_MSG',charbaseUpdate,1);
+		cwAPI.events.on('ON_JOB_EXP_UPDATE',charjobUpdate,1);
+
+		cwAPI.commands.register('/farmed',checkCommand);
+		log('[cwFarmed:help] /farmed');
+
+		cwAPI.json.save(options,'cwfarmed');
+		isLoaded = true;
 	end
-
-	settings.resetXPBase();
-	settings.resetXPJob();
-	settings.resetSilver();
-	settings.resetPet();
-
-	-- executing onload
-	cwAPI.events.on('ITEMMSG_ITEM_COUNT',inventoryUpdate,1);
-	cwAPI.events.on('DRAW_TOTAL_VIS',refreshZeny,1);
-	cwAPI.events.on('CHARBASEINFO_ON_MSG',charbaseUpdate,1);
-	cwAPI.events.on('ON_JOB_EXP_UPDATE',charjobUpdate,1);
-
-	cwAPI.commands.register('/farmed',checkCommand);
-	log('[cwFarmed:help] /farmed');
-
-	cwAPI.json.save(options,'cwfarmed');
-
-	return true;
 end
+

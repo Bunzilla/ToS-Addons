@@ -1,3 +1,5 @@
+local cwAPI = require("cwapi");
+
 -- ======================================================
 --	settings
 -- ======================================================
@@ -69,17 +71,21 @@ end
 -- ======================================================
 --	LOADER
 -- ======================================================
+local isLoaded = false;
 
-_G['ADDON_LOADER']['cwshakeness'] = function() 
-	-- checking dependences
-	if (not cwAPI) then
-		ui.SysMsg('cwShakeness requires cwAPI to run.');
-		return false;
+function CWSHAKENESS_ON_INIT()
+	if not isLoaded then
+		-- checking dependences
+		if (not cwAPI) then
+			ui.SysMsg('cwShakeness requires cwAPI to run.');
+			return false;
+		end
+		-- executing onload
+		storeShockwave();
+		replaceShockwave();
+		cwAPI.commands.register('/skn',cwShakenessCommands);
+		cwAPI.util.log('[cwShakeness:help] /skn');
+		isLoaded = true;
 	end
-	-- executing onload
-	storeShockwave();
-	replaceShockwave();
-	cwAPI.commands.register('/skn',cwShakenessCommands);
-	cwAPI.util.log('[cwShakeness:help] /skn');
-	return true;
 end
+
