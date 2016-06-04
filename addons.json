@@ -17,8 +17,8 @@
 		"name": "cwFarmed",
 		"file": "cwfarmed",
 		"extension": "ipf",
-		"fileVersion": "v1.0.1",
-		"releaseTag": "acutilSlashCommand",
+		"fileVersion": "v1.0.2",
+		"releaseTag": "cwfarmed",
 		"unicode": "🐻",
 		"description": "cwFarmed allows you to easily see what's really being farmed while you grind your way through the game.",
 		"tags": [
@@ -48,8 +48,8 @@
 		"name": "cwRepair",
 		"file": "cwrepair",
 		"extension": "ipf",
-		"fileVersion": "v1.0.2",
-		"releaseTag": "cwrepair",
+		"fileVersion": "v1.0.1",
+		"releaseTag": "acutilSlashCommand",
 		"unicode": "🐻",
 		"description": "cwRepair lets you define a durability% to consider a gear 'good' and easily repair the bads when visiting a repair shop.",
 		"tags": [
